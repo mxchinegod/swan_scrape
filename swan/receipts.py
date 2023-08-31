@@ -15,7 +15,7 @@ class Receipts:
     def create(self, o=False, ts=True):
         _e = self.check()
         if _e and not o:
-            _f('warn', f'{self.path} exists')
+            return _f('warn', f'{self.path} exists')
         with open(self.path, 'w') as _:
             io = csv.writer(_)
             check_headers(self) if self._schema['data'] is not None else None
