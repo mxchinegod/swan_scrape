@@ -6,6 +6,8 @@ swan
 
 <small>🐍 toolkit for S-tier data acquisition</small>
 
+<small>high-efficiency text & file scraper with smart tracking for building language model datasets</small>
+
 </center>
 
 ## usage
