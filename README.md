@@ -36,7 +36,9 @@ receipts.destroy(confirm=receipts.path.split('/')[-1])
 🚨 WARN: fed.txt destroyed from ./fed.txt
 🚨 WARN: fed.csv destroyed from ./fed.csv
 ```
+
 #### recursive mode with three filetypes, and whole directory deletion
+
 ```python
 from swan.copier import Copier
 from swan.receipts import Receipts
