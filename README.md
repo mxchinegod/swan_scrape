@@ -25,7 +25,7 @@ receipts.write(False)
 copy.destroy(confirm=copy.path.split('/')[-1])
 receipts.destroy(confirm=receipts.path.split('/')[-1])
 ```
-```text
+```shell
 ℹ️ INFO: written - ./fed.txt
 ☕️ WAIT: no header set - attempting `.keys()`
 🌊 SUCCESS: headers detected as ['file', 'path'] from `.keys()`
