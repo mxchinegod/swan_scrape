@@ -43,4 +43,4 @@ class Copier:
             _f('warn', f'{confirm if not self.recurse else len(self._files)} destroyed from {self.path}') if confirm is not None else None
             return [os.remove(f'{self.path}/{_file.split("/")[-1]}') for _file in self._files] if self.recurse else os.remove(self.path)
         else:
-            return _f('fatal','you did not confirm - `Copier.destroy(confirm="parent_dir")`')
+            return _f('fatal','you did not confirm - `SP.destroy(confirm="parent_dir")`')
