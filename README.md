@@ -8,7 +8,7 @@ swan
 
 <small>high-efficiency text & file scraper with smart tracking for building language model datasets</small>
 
-<a href="https://huggingface.co/datasets/dylanalloy/swan">dataset repo on 🤗</a>
+<a href="https://huggingface.co/datasets/dylanalloy/swan" target="_blank">dataset repo on 🤗</a>
 
 </center>
 
