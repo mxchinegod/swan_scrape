@@ -1,6 +1,6 @@
 import os, csv, requests
-from fancy_print import _f
-from utils import check_headers, dateme, writeme, files
+from .fancy_print import _f
+from .utils import check_headers, dateme, writeme, files
 
 class Copier:
     def __init__(self, url=None, recurse=False, custom=False):

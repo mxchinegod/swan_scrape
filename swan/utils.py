@@ -1,4 +1,4 @@
-from fancy_print import _f
+from .fancy_print import _f
 from datetime import datetime
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin

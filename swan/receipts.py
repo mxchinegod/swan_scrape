@@ -1,6 +1,6 @@
 import os, csv
-from fancy_print import _f
-from utils import check_headers, dateme
+from .fancy_print import _f
+from .utils import check_headers, dateme
 
 class Receipts:
     def __init__(self, path, data=None, head=None):
@@ -9,8 +9,7 @@ class Receipts:
             "data": data
             , "header": head
         }
-        return _f('fatal', 'data not found') if data==None else None
-        return _f('warn', 'path not found') if not self.check() else None
+        return _f('fatal', 'data not found') if data==None else _f('warn', 'path not found') if not self.check() else None
     def check(self):
         return os.path.exists(self.path)
     def create(self, o=False, ts=True):
@@ -46,7 +45,7 @@ class Receipts:
                     _r.append(datum)
                 _f('info', f'found {line} in data')
         return [x for x in _r]
-    def write(self, o=False, ts=True):
+    def write(self, o=False, ts=True, v=False):
         _e = self.check()
         _h = check_headers(self)
         self._schema['header'].append('ts') if ts and 'ts' not in self._schema['header'] else None
@@ -56,7 +55,7 @@ class Receipts:
                 io.writerow(self._schema['header']) if _h and o else None
                 [dateme(x) for x in self._schema['data']]
                 [io.writerow(x.values()) for x in self._schema['data']]
-                _f('success', f'{self._schema}')
+                _f('success', f'{self._schema}' if v else f'{len(self._schema["data"])} written to {self.path}')
         else:
             _f('fatal', 'path not found')
     def destroy(self, confirm=None):
