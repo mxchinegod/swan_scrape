@@ -25,7 +25,7 @@ receipts.write(False)
 copy.destroy(confirm=copy.path.split('/')[-1])
 receipts.destroy(confirm=receipts.path.split('/')[-1])
 ```
-```bash
+```text
 ℹ️ INFO: written - ./fed.txt
 ☕️ WAIT: no header set - attempting `.keys()`
 🌊 SUCCESS: headers detected as ['file', 'path'] from `.keys()`
@@ -52,7 +52,7 @@ receipts.write(False)
 copy.destroy(confirm=copy.path.split('/')[-1])
 receipts.destroy(confirm=receipts.path.split('/')[-1])
 ```
-```bash
+```shell
 ☕️ WAIT: processing https://www.federalreserve.gov/monetarypolicy/fomchistorical2017.htm
 100%|██████████| 326/326 [00:00<00:00, 154066.83it/s]
 ℹ️ INFO: found - https://www.federalreserve.gov/monetarypolicy/beigebook/files/Beigebook_20170118.pdf
@@ -97,7 +97,7 @@ SECSifter.sift = lambda _: '' if _.startswith('linkbase:') else _
 sifted = SECSifter.sift(data)
 print(sifted)
 ```
-```bash
+```shell
 ```
 
 #### rendering markdown handler
@@ -111,7 +111,7 @@ xml = '<TITLE>hello there</TITLE>'
 clean = Broom(copy=xml).sweep(xml=True)
 print(clean)
 ```
-```bash
+```shell
 hello there
 TITLE: hello there
 ```
@@ -124,7 +124,7 @@ worker = Janitor(path='./fed.txt', o='./fed_processed.txt')
 worker.process()
 worker.destroy(confirm=worker.o.split('/')[-1])
 ```
-```bash
+```shell
 ℹ️ INFO: written - ./fed_processed.txt
 🚨 WARN: fed_processed.txt destroyed from ./fed_processed.txt
 ```
@@ -142,6 +142,6 @@ p.generate(show=True)
 p.destroy(confirm=p.save.split('/')[-1])
 ```
 ![SP](plot.png)
-```bash
+```shell
 🚨 WARN: plot.png destroyed from ./plot.png
 ```
