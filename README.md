@@ -1,10 +1,11 @@
 <center>
 
-<img style="max-width:150px" src="https://huggingface.co/datasets/dylanalloy/swan/resolve/main/swan.png">
+<img style="width:150px" src="https://huggingface.co/datasets/dylanalloy/swan/resolve/main/swan.png">
 
 swan
 
 <small>🐍 toolkit for S-tier data acquisition</small>
+
 </center>
 
 ## usage
