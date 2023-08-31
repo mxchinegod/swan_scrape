@@ -3,6 +3,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 from tqdm import tqdm
+import os
 
 def check_headers(receipts):
     if receipts._schema['header'] is None:
@@ -37,3 +38,22 @@ def files(content, url, types):
             _.append(_u)
             _f('info',f'found - {_u}')
     return _
+
+def dir_size(directory):
+        _ = 0
+        for path, dirs, files in os.walk(directory):
+            for file in files:
+                filepath = os.path.join(path, file)
+                _ += os.path.getsize(filepath)
+        return _
+    
+def all_dir_size(directories):
+    sizes = {}
+    for directory in directories:
+        if os.path.isdir(directory):
+            size_bytes = dir_size(directory)
+            size_gb = size_bytes / (1024 ** 3)  # Convert bytes to GB
+            sizes[directory] = size_gb
+        else:
+            print(f"Directory '{directory}' does not exist.")
+    return sizes
