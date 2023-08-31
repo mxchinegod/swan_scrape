@@ -1,7 +1,7 @@
 import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup as bs
 from .fancy_print import _f
-import docx, PyPDF2
+import docx, PyPDF2, re, html
 from io import BytesIO
 from swan.utils import writeme
 
@@ -21,10 +21,14 @@ class Broom:
                         _r += f"{e.tag.split('}')[1]}: {e.text}\n"
                     except:
                         _r += f"{e.tag}: {e.text}\n"
+            return _r
         else:
             _s = bs(self.ml, 'html.parser')
             _r = _s.get_text(separator=' ')
-        return _r
+            _c = html.unescape(_r)
+            _c = re.sub(r'<[^>]+>', '', _c)
+            c = _c.replace('\n', ' ').replace('\t', ' ')
+            return c
     
 class Chemicals():
     def __init__(self, path=None):

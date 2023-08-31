@@ -59,5 +59,8 @@ class Receipts:
         else:
             _f('fatal', 'path not found')
     def destroy(self, confirm=None):
-        os.remove(self.path), _f('warn', f'{confirm} destroyed from {self.path}') if confirm==self.path.split('/')[-1] else _f('fatal','you did not confirm - `Receipts.destroy(confirm="file_name")`')
+        if confirm==self.path.split('/')[-1]:
+            os.remove(self.path), _f('warn', f'{confirm} destroyed from {self.path}') 
+        else:
+            _f('fatal','you did not confirm - `Receipts.destroy(confirm="file_name")`')
         
