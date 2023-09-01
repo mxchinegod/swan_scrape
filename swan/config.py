@@ -80,7 +80,7 @@ class Config:
         fatal error if the `config` does not match the schema.
         """
         if likethis(config):
-            _p = os.path.join(config["settings"]["proj_dir"],config["settings"]["name"])
+            _p = os.path.join(config["settings"]["proj_dir"],config["settings"]["name"])+'/config.json'
             if check(_p):
                 return _f('fatal',f'exists - {_p}')
             else:
@@ -107,7 +107,7 @@ class Config:
         be set to the name of the file that you want to destroy
         :return: a message indicating whether the file was successfully destroyed or not.
         """
-        if likethis(self.c, self._schema):
+        if likethis(self.c):
             if not check(self.p):
                 return _f('fatal', f'invalid path - {self.p}')
             if confirm==self.c["settings"]["name"]:

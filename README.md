@@ -367,3 +367,5 @@ direct_load.destroy('fin-swan')
     - [ ] if / ternary conventions
 - [ ] implement API response option for `Copier`
     - [ ] custom header arg for `Copier`
+- [ ] add multiprocessing where needed
+    - [ ] put tqdm in the right places

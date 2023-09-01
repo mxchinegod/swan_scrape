@@ -170,7 +170,7 @@ def likethis(_j: dict = object):
     :type _s: object
     :return: either True or an error message if the validation fails.
     """
-    _schema = {
+    schema = {
         "type": "object"
         , "properties": {
             "role": { "type": "string" }
@@ -190,7 +190,7 @@ def likethis(_j: dict = object):
         }
     }
     try:
-        validate(instance=_j, s=_schema)
+        validate(_j, schema)
     except ve as e:
         return _f('fatal',f'{e}')
     return True
