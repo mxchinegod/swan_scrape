@@ -2,7 +2,7 @@
 
 <img style="width:150px" src="https://huggingface.co/datasets/dylanalloy/swan/resolve/main/swan.png">
 
-swan
+# 🦢 swan
 
 <small>🐍 toolkit for S-tier data acquisition</small>
 
