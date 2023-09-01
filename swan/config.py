@@ -9,7 +9,7 @@ class Config:
                 "role": { "type": "string" }
                 , "settings": {
                     "name": { "type": "string" }
-                    , "data_dir": { "type": "string" }
+                    , "proj_dir": { "type": "string" }
                     , "jobs": {
                         "type": "object"
                         , "properties": {
@@ -38,5 +38,41 @@ class Config:
             return _f('success', f'config saved to - {self.p} {" (overwrite)" if check(self.p) else None}')
     def unbox(self, o: bool = False):
         if likethis(self.c, self._schema):
-            _p = f'{self.c["settings"]["data_dir"]}{self.c["settings"]["name"]}'
-            _f('success', f'unboxed! 🦢📦 - {_p} ') if not check(_p) or o else _f('fatal',f'exists - {_p}')
+            _p = os.path.join(self.c["settings"]["proj_dir"],self.c["settings"]["name"])
+            if o and check(_p):
+                shutil.rmtree(_p)
+                os.mkdir(_p)
+                shutil.copy(self.p, _p)
+            elif not check(_p):
+                os.mkdir(_p)
+                shutil.copy(self.p, _p)
+            else:
+                return _f('fatal',f'exists - {_p}')
+            return _f('success', f'unboxed! 🦢📦 - {_p} ')
+    def create(self, config: dict = None):
+        if likethis(config, self._schema):
+            _p = os.path.join(config["settings"]["proj_dir"],config["settings"]["name"])
+            if check(_p):
+                return _f('fatal',f'exists - {_p}')
+            else:
+                os.mkdir(_p)
+                f = open(os.path.join(_p, 'config.json'), 'w')
+                json.dump(config, f)
+            return _f('success', f'unboxed! 🦢📦 using - {_p} ')
+        else:
+            return _f('fatal', 'your config schema does not match the requirements')
+    def destroy(self, confirm: str = None):
+        """
+        The function `destroy` removes a file if the confirmation matches the file name.
+        
+        :param confirm: The `confirm` parameter is used to confirm the destruction of a file. It should
+        be set to the name of the file that you want to destroy
+        :return: a message indicating whether the file was successfully destroyed or not.
+        """
+        if not check(self.p):
+            return _f('fatal', f'invalid path - {self.p}')
+        if confirm==self.c["settings"]["name"]:
+            shutil.rmtree(self.p.replace('config.json','')), _f('warn', f'{confirm} destroyed')
+        else:
+            _f('fatal','you did not confirm - `Config.destroy(confirm="your_config_name")`')
+        
