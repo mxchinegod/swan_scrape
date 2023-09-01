@@ -6,13 +6,31 @@ import os, re, html
 
 class Janitor:
     def __init__(self, path=None, o=None):
+        """
+        The function initializes an object with a path and an output path, and checks for invalid path
+        and missing output path.
+        
+        :param path: The `path` parameter is used to specify a file path. It is an optional parameter,
+        meaning it can be set to `None` if not needed
+        :param o: The parameter "o" represents the output path. It is used to specify the location where
+        the output of the code will be saved or written to
+        """
         self.path = path
         self.o = o
         _f('warn', 'invalid path') if path is None or not self.check() else None
         _f('warn', 'no output path set') if o is None else None
     def check(self):
+        """
+        The function checks if a file or directory exists at the specified path.
+        :return: a boolean value indicating whether the path specified by `self.path` exists or not.
+        """
         return os.path.exists(self.path)
     def process(self):
+        """
+        The function processes a file by reading its contents, detecting the encoding, and performing
+        specific actions based on the file type.
+        :return: the result of the `writeme` function call, which is not shown in the provided code.
+        """
         if self.check():
             with open(self.path, 'rb') as f:
                 _ = f.read()
@@ -30,6 +48,13 @@ class Janitor:
         else:
             return _f('fatal', 'invalid path')
     def destroy(self, confirm=None):
+        """
+        The function `destroy` removes a file if the confirmation matches the file name.
+        
+        :param confirm: The `confirm` parameter is used to confirm the destruction of a file. It should
+        be set to the name of the file that you want to destroy
+        :return: a message indicating whether the file was successfully destroyed or not.
+        """
         _e = self.check()
         if not _e:
             return _f('fatal', 'invalid path')

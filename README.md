@@ -41,6 +41,24 @@ receipts.destroy(confirm=receipts.path.split('/')[-1])
 🚨 WARN: fed.csv destroyed from ./fed.csv
 ```
 
+#### seek through receipts
+
+```python
+integer = receipts.seek(line=0)
+string = receipts.seek(line='monetarypolicy')
+by_date = receipts.seek(line='2023-08-31')
+print(integer)
+print(string)
+print(by_date)
+```
+```shell
+ℹ️ INFO: found monetarypolicy in data
+ℹ️ INFO: found 2023-08-31 in data
+{'file': 'https://www.federalreserve.gov/monetarypolicy/fomchistorical2017.htm', 'path': './fed.txt', 'ts': '2023-08-31 19:57:02.593086'}
+[{'file': 'https://www.federalreserve.gov/monetarypolicy/fomchistorical2017.htm', 'path': './fed.txt', 'ts': '2023-08-31 19:57:02.593086'}]
+[{'file': 'https://www.federalreserve.gov/monetarypolicy/fomchistorical2017.htm', 'path': './fed.txt', 'ts': '2023-08-31 19:57:02.593086'}]
+```
+
 #### recursive mode with three filetypes, and whole directory deletion
 
 ```python
