@@ -200,7 +200,6 @@ p.destroy(confirm=p.save.split('/')[-1])
 
 <details><summary>declare existing config from file</summary>
 
-
 ```python
 from swan.config import Config
 example = Config("./config.json")
@@ -249,7 +248,10 @@ example.unbox(True)
 example.unbox()
 ```
 
-##### initialize from memory i.e. API response
+</details>
+
+<details><summary>initialize from memory i.e. API response</summary>
+
 ```python
 fin_conf = {
     "role": "server",
@@ -281,6 +283,7 @@ direct_load.destroy('fin-swan')
 🚨 WARN: fin-swan destroyed
 ```
 </details>
+
 <details><summary>all together now 🎶</summary>
 
 ```python
