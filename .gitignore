@@ -4,6 +4,8 @@ __pycache__/
 *$py.class
 .DS_Store
 .virtual_documents
+config.json
+nats*
 
 # C extensions
 *.so

@@ -1,5 +1,5 @@
 import os, csv
-from .utils import check_headers, dateme, _f
+from .utils import check_headers, dateme, _f, check
 
 class Receipts:
     def __init__(self, path, data=None, head: list = None):
@@ -25,13 +25,7 @@ class Receipts:
             "data": data
             , "header": head
         }
-        return _f('fatal', 'data not found') if data==None else _f('warn', 'path not found') if not self.check() else None
-    def check(self):
-        """
-        The function checks if a file or directory exists at the specified path.
-        :return: a boolean value indicating whether the path specified by `self.path` exists or not.
-        """
-        return os.path.exists(self.path)
+        return _f('fatal', 'data not found') if data==None else _f('warn', 'path not found') if not check(self.path) else None
     def create(self, o: bool = False, ts: bool = True):
         """
         The function creates a CSV file with a specified path and writes the header row based on the
@@ -49,7 +43,7 @@ class Receipts:
         the code creates a new file and writes the header row to it. Finally, an info message is printed
         indicating that the file has been created.
         """
-        _e = self.check()
+        _e = check(self.path)
         if _e and not o:
             return _f('warn', f'{self.path} exists')
         with open(self.path, 'w') as _:
@@ -108,7 +102,7 @@ class Receipts:
         entire `self._schema` object. If `v` is `False`, the success message will include the number of
         items, defaults to False (optional)
         """
-        _e = self.check()
+        _e = check(self.path)
         _h = check_headers(self)
         self._schema['header'].append('ts') if ts and 'ts' not in self._schema['header'] else None
         if _e:

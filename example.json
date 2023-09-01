@@ -1,0 +1,20 @@
+{
+    "role": "server",
+    "settings": {
+        "name": "test",
+        "data_dir": "/Users/P2941938/VSCode/Research/swan_scrape.git/",
+        "jobs": [
+            {
+                "url": "",
+                "types": [],
+                "janitor": false,
+                "custom": [
+                    {
+                        "func": ""
+                        , "types": [""]
+                    }
+                ]
+            }
+        ]
+    }
+}

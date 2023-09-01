@@ -1,6 +1,6 @@
 import chardet
 from .supplies import Broom
-from .utils import writeme, _f
+from .utils import writeme, _f, check
 import os
 
 class Janitor:
@@ -16,21 +16,15 @@ class Janitor:
         """
         self.path = path
         self.o = o
-        _f('warn', 'invalid path') if path is None or not self.check() else None
+        _f('warn', 'invalid path') if path is None or not check(self.path) else None
         _f('warn', 'no output path set') if o is None else None
-    def check(self):
-        """
-        The function checks if a file or directory exists at the specified path.
-        :return: a boolean value indicating whether the path specified by `self.path` exists or not.
-        """
-        return os.path.exists(self.path)
     def process(self):
         """
         The function processes a file by reading its contents, detecting the encoding, and performing
         specific actions based on the file type.
         :return: the result of the `writeme` function call, which is not shown in the provided code.
         """
-        if self.check():
+        if check(self.path):
             with open(self.path, 'rb') as f:
                 _ = f.read()
                 enc = chardet.detect(_)['encoding']
@@ -54,10 +48,9 @@ class Janitor:
         be set to the name of the file that you want to destroy
         :return: a message indicating whether the file was successfully destroyed or not.
         """
-        _e = self.check()
-        if not _e:
+        if not check(self.o):
             return _f('fatal', 'invalid path')
-        if confirm==self.o.split('/')[-1] and _e:
+        if confirm==self.o.split('/')[-1]:
             os.remove(self.o), _f('warn', f'{confirm} destroyed from {self.o}')
         else:
             _f('fatal','you did not confirm - `Receipts.destroy(confirm="file_name")`')

@@ -2,7 +2,9 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 from tqdm import tqdm
-import os
+from jsonschema import validate
+from jsonschema.exceptions import ValidationError as ve
+import os, json
 
 def _f(tag: str = None, body: any = None):
     """
@@ -29,6 +31,13 @@ def _f(tag: str = None, body: any = None):
         print(f'{color_code}{emoji} {tag_text}: {body}\033[0m')  # Reset color after the text
     else:
         print(f'😭 UNKNOWN TAG - `{tag}`')
+
+def check(path):
+        """
+        The function checks if a file or directory exists at the specified path.
+        :return: a boolean value indicating whether the path specified by `self.path` exists or not.
+        """
+        return os.path.exists(path)
 
 def check_headers(receipts):
     """
@@ -69,7 +78,7 @@ def dateme(receipt: dict = None):
     receipt['ts']=_t
     return _f('info',f'timestamped - {_t}')
 
-def writeme(content: str = None, path: str = None):
+def writeme(content: str | dict = None, path: str = None):
     """
     The function `writeme` writes the given content to a file specified by the path and returns a
     message indicating that the file has been written.
@@ -84,6 +93,9 @@ def writeme(content: str = None, path: str = None):
     with open(path, "wb") as _:
         _.write(content)
     return _f('info',f'written - {path}')
+
+def readthis(path: str = None):
+    return open(path,'r')
 
 def files(content: str = None, url: str = None, types: list = None):
     """
@@ -143,3 +155,10 @@ def all_dir_size(directories: list = None):
         else:
             print(f"Directory '{directory}' does not exist.")
     return sizes
+
+def likethis(_j: dict = object, _s: object = None):
+    try:
+        validate(instance=_j, schema=_s)
+    except ve as e:
+        return _f('fatal',f'{e}')
+    return True
