@@ -169,3 +169,146 @@ p.destroy(confirm=p.save.split('/')[-1])
 ```shell
 🚨 WARN: plot.png destroyed from ./plot.png
 ```
+
+### advanced configuration & job planning
+
+##### declare existing config from file
+```python
+from swan.config import Config
+example = Config("./config.json")
+```
+##### put it in memory
+```python
+conf = example.use()
+_l = lambda _: list(_)
+print(_l(conf.keys()))
+print(conf["settings"]["name"])
+```
+##### change a value & save
+```python
+conf["settings"]["name"] = 'example'
+example.save()
+```
+##### remove from memory
+```python
+c, conf = (None, None)
+```
+##### load from f/s again
+```python
+c = Config("./config.json")
+conf = c.use()
+role, name = conf['role'], conf['settings']['name']
+```
+##### see that the value has changed
+```python
+print(f'{role}: {name}')
+```
+```shell
+🌊 SUCCESS: config loaded from - ./config.json
+['role', 'settings']
+example
+🌊 SUCCESS: config saved to - ./config.json (overwrite)
+🌊 SUCCESS: config loaded from - ./config.json
+server: example
+```
+
+##### overrides
+```python
+example.unbox(True)
+example.unbox()
+```
+
+##### initialize from memory i.e. API response
+```python
+fin_conf = {
+    "role": "server",
+    "settings": {
+        "name": "fin-swan",
+        "proj_dir": "/Users/dylanmoore/VSCode/LLM/swan_scrape.git/",
+        "jobs": [
+            {
+                "url": "https://www.federalreserve.gov/monetarypolicy/fomchistorical2017.htm",
+                "types": [],
+                "janitor": 0,
+                "custom": [
+                    {
+                        "func": ""
+                        , "types": [""]
+                    }
+                ]
+            }
+        ]
+    }
+}
+direct_load = Config(fin_conf)
+direct_load.use()
+direct_load.destroy('fin-swan')
+```
+```shell
+🌊 SUCCESS: unboxed! 🦢📦 using - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/fin-swan 
+🌊 SUCCESS: config loaded from - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/fin-swan/config.json
+🚨 WARN: fin-swan destroyed
+```
+
+#### all together now 🎶
+```python
+# all together now 🎶
+from swan.copier import Copier
+from swan.receipts import Receipts
+from swan.config import Config
+import os
+
+fin_conf = {
+    "role": "server",
+    "settings": {
+        "name": "fin-swan",
+        "proj_dir": "/Users/dylanmoore/VSCode/LLM/swan_scrape.git/",
+        "jobs": [
+            {
+                "url": "https://www.federalreserve.gov/monetarypolicy/fomchistorical2017.htm",
+                "types": [],
+                "janitor": 0,
+                "custom": [
+                    {
+                        "func": ""
+                        , "types": [""]
+                    }
+                ]
+            }
+        ]
+    }
+}
+direct_load = Config(fin_conf)
+c = direct_load.use()
+p = os.path.join(c['settings']['proj_dir'], c['settings']['name'])
+data = []
+for job in c['settings']['jobs']:
+    copy = Copier(url=job['url'])
+    if copy.download(p+'/fed.txt'):
+        data.append({"file":copy.url, "path":f'{copy.path}'})
+receipts = Receipts(path=p+'/fed.csv', data=data)
+receipts.create(True)
+receipts.write(False)
+```
+```shell
+🌊 SUCCESS: unboxed! 🦢📦 using - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/fin-swan 
+🌊 SUCCESS: config loaded from - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/fin-swan/config.json
+ℹ️ INFO: written - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/fin-swan/fed.txt
+🚨 WARN: path not found
+☕️ WAIT: no header set - attempting `.keys()`
+🌊 SUCCESS: headers detected as ['file', 'path'] from `.keys()`
+ℹ️ INFO: [file, path, ts] header used
+ℹ️ INFO: created /Users/dylanmoore/VSCode/LLM/swan_scrape.git/fin-swan/fed.csv
+ℹ️ INFO: timestamped - 2023-09-01 17:28:27.786525
+🌊 SUCCESS: 1 written to /Users/dylanmoore/VSCode/LLM/swan_scrape.git/fin-swan/fed.csv
+```
+
+### 💣
+
+```python
+# that easy
+direct_load.destroy('fin-swan')
+```
+```shell
+🚨 WARN: fin-swan destroyed
+```

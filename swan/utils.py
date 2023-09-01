@@ -4,7 +4,7 @@ from urllib.parse import urljoin
 from tqdm import tqdm
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError as ve
-import os, json
+import os
 
 def _f(tag: str = None, body: any = None):
     """
@@ -33,11 +33,11 @@ def _f(tag: str = None, body: any = None):
         print(f'😭 UNKNOWN TAG - `{tag}`')
 
 def check(path):
-        """
-        The function checks if a file or directory exists at the specified path.
-        :return: a boolean value indicating whether the path specified by `self.path` exists or not.
-        """
-        return os.path.exists(path)
+    """
+    The function checks if a file or directory exists at the specified path.
+    :return: a boolean value indicating whether the path specified by `self.path` exists or not.
+    """
+    return os.path.exists(path)
 
 def check_headers(receipts):
     """
@@ -156,7 +156,7 @@ def all_dir_size(directories: list = None):
             print(f"Directory '{directory}' does not exist.")
     return sizes
 
-def likethis(_j: dict = object, _s: object = None):
+def likethis(_j: dict = object):
     """
     The function `likethis` validates a JSON object `_j` against a JSON schema `_s` and returns `True`
     if the validation is successful, otherwise it returns a fatal error message.
@@ -170,8 +170,27 @@ def likethis(_j: dict = object, _s: object = None):
     :type _s: object
     :return: either True or an error message if the validation fails.
     """
+    _schema = {
+        "type": "object"
+        , "properties": {
+            "role": { "type": "string" }
+            , "settings": {
+                "name": { "type": "string" }
+                , "proj_dir": { "type": "string" }
+                , "jobs": {
+                    "type": "object"
+                    , "properties": {
+                        "url": { "type": "string" }
+                        , "files": { "type": "array" }
+                        , "janitor": { "type": "boolean" }
+                        , "custom": { "type": "array" }
+                    }
+                }
+            }
+        }
+    }
     try:
-        validate(instance=_j, schema=_s)
+        validate(instance=_j, s=_schema)
     except ve as e:
         return _f('fatal',f'{e}')
     return True
