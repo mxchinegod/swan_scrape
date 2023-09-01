@@ -3,18 +3,24 @@
 <img style="width:150px" src="https://huggingface.co/datasets/dylanalloy/swan/resolve/main/swan.png">
 
 # 🦢 swan
+superfast web acquisition network - <small>toolkit for 🐍-tier data acquisition</small>
 
-<small>🐍 toolkit for S-tier data acquisition</small>
 
-<small>high-efficiency text & file scraper with smart tracking for building language model datasets</small>
+<small>high-efficiency text & file scraper with smart tracking, client/server networking for building language model datasets __*fast*__  🌊</small>
 
-<a href="https://huggingface.co/datasets/dylanalloy/swan" target="_blank">dataset repo on 🤗</a>
+<a href="https://huggingface.co/datasets/dylanalloy/swan" target="_blank">swan-financial dataset repo on 🤗</a>
 
 </center>
 
-## usage
+## 💻 install
 
-#### single file & receipt creation, then deletion
+    🚧 coming soon 🚧
+
+## ⚡️ usage
+
+<details>
+<summary>single file & receipt creation, then deletion</summary>
+<br>
 
 ```python
 from swan.copier import Copier
@@ -41,7 +47,10 @@ receipts.destroy(confirm=receipts.path.split('/')[-1])
 🚨 WARN: fed.csv destroyed from ./fed.csv
 ```
 
-#### seek through receipts
+</details>
+
+<details>
+<summary>seek through receipts</summary>
 
 ```python
 integer = receipts.seek(line=0)
@@ -59,7 +68,10 @@ print(by_date)
 [{'file': 'https://www.federalreserve.gov/monetarypolicy/fomchistorical2017.htm', 'path': './fed.txt', 'ts': '2023-08-31 19:57:02.593086'}]
 ```
 
-#### recursive mode with three filetypes, and whole directory deletion
+</details>
+
+<details>
+<summary>recursive mode with three filetypes, and whole directory deletion</summary>
 
 ```python
 from swan.copier import Copier
@@ -109,7 +121,10 @@ Output is truncated. View as a scrollable element or open in a text editor. Adju
 🚨 WARN: fed.csv destroyed from ./fed.csv
 ```
 
-#### example custom anonymous function
+</details>
+
+<details>
+<summary>example custom anonymous function</summary>
 
 ```python
 from swan.supplies import Custom
@@ -124,7 +139,10 @@ print(sifted)
 ```shell
 ```
 
-#### rendering markdown handler
+</details>
+
+<details>
+<summary>rendering markdown handler</summary>
 
 ```python
 data = '<html>hello there</html>'
@@ -140,7 +158,10 @@ hello there
 TITLE: hello there
 ```
 
-#### pure text formatter
+</details>
+
+<details>
+<summary>pure text formatter</summary>
 
 ```python
 from swan.janitor import Janitor
@@ -153,7 +174,10 @@ worker.destroy(confirm=worker.o.split('/')[-1])
 🚨 WARN: fed_processed.txt destroyed from ./fed_processed.txt
 ```
 
-#### dataset statistics
+</details>
+
+<details>
+<summary>dataset statistics</summary>
 
 ```python
 from swan.teacher import SP
@@ -170,9 +194,13 @@ p.destroy(confirm=p.save.split('/')[-1])
 🚨 WARN: plot.png destroyed from ./plot.png
 ```
 
-### advanced configuration & job planning
+</details>
 
-##### declare existing config from file
+## 🤓 advanced configuration & job planning
+
+<details><summary>declare existing config from file</summary>
+
+
 ```python
 from swan.config import Config
 example = Config("./config.json")
@@ -212,7 +240,10 @@ example
 server: example
 ```
 
-##### overrides
+</details>
+
+<details><summary>overrides</summary>
+
 ```python
 example.unbox(True)
 example.unbox()
@@ -249,8 +280,9 @@ direct_load.destroy('fin-swan')
 🌊 SUCCESS: config loaded from - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/fin-swan/config.json
 🚨 WARN: fin-swan destroyed
 ```
+</details>
+<details><summary>all together now 🎶</summary>
 
-#### all together now 🎶
 ```python
 # all together now 🎶
 from swan.copier import Copier
@@ -302,8 +334,9 @@ receipts.write(False)
 ℹ️ INFO: timestamped - 2023-09-01 17:28:27.786525
 🌊 SUCCESS: 1 written to /Users/dylanmoore/VSCode/LLM/swan_scrape.git/fin-swan/fed.csv
 ```
+</details>
 
-### 💣
+<details><summary>💣</summary>
 
 ```python
 # that easy
@@ -312,3 +345,18 @@ direct_load.destroy('fin-swan')
 ```shell
 🚨 WARN: fin-swan destroyed
 ```
+
+</details>
+
+## 📝 needs
+
+- [ ] worker/server engineering
+    - [ ] finish `Fax` -> [NATS docs](https://natsbyexample.com), [py client](https://github.com/nats-io/nats.py)
+- [x] good readme
+- [x] config template / management
+    - [ ] optional encryption of config unboxings
+- [ ] tests 😢
+    - [ ] move more to `.utils`
+    - [ ] if / ternary conventions
+- [ ] implement API response option for `Copier`
+    - [ ] custom header arg for `Copier`
