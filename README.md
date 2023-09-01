@@ -240,7 +240,7 @@ print(f'{role}: {name}')
 ```shell
 🌊 SUCCESS: config loaded from - ./config.json
 ['role', 'settings']
-example
+fin-swan
 🌊 SUCCESS: config saved to - ./config.json (overwrite)
 🌊 SUCCESS: config loaded from - ./config.json
 server: example
