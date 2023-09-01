@@ -6,7 +6,7 @@ from io import BytesIO
 from swan.utils import writeme
 
 class Broom:
-    def __init__(self, copy=None):
+    def __init__(self, copy: str = None):
         """
         The function initializes an object with a copy of text data.
         
@@ -22,7 +22,7 @@ class Broom:
             return _f('fatal', 'no copy/data set - `Broom(copy=text_data)`')
         else:
             self.ml=copy
-    def sweep(self, xml=False):
+    def sweep(self, xml: bool = False):
         """
         The `sweep` function takes in an XML or HTML string and returns a cleaned version of the text
         content, either as plain text or as a formatted string with tag names.
@@ -53,7 +53,7 @@ class Broom:
             c = _c.replace('\n', ' ').replace('\t', ' ')
             return c
 class Chemicals():
-    def __init__(self, path=None):
+    def __init__(self, path: str = None):
         """
         The function initializes an object with a given path and returns an error message if the path is
         not set.
@@ -89,7 +89,7 @@ class Chemicals():
             except Exception as e:
                 _f('fatal', f'document: {e} | {self.path}')
 class Custom:
-    def __init__(self, copy=None):
+    def __init__(self, copy: str = None):
         """
         The function initializes an object with an optional copy parameter.
         

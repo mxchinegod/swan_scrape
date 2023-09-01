@@ -3,25 +3,25 @@ import matplotlib.pyplot as plt
 from swan.fancy_print import _f
 
 class SP:
-    def __init__(self, copy=None, save=None):
+    def __init__(self, path: str = None, save: str = None):
         """
-        The function initializes an object with a copy and save attribute, and displays a warning if no
+        The function initializes an object with a path and save attribute, and displays a warning if no
         data set is provided.
         
-        :param copy: The `copy` parameter is used to specify the path of the data set that you want to
-        copy. It is an optional parameter and if it is not provided, a warning message will be displayed
+        :param path: The `path` parameter is used to specify the path of the data set that you want to
+        path. It is an optional parameter and if it is not provided, a warning message will be displayed
         indicating that no data set is specified
         :param save: The `save` parameter is used to specify the location where the data will be saved.
         It is an optional parameter, so if it is not provided, the data will not be saved
-        :return: If `copy` is `None`, then a warning message is returned. If `copy` is not `None`, then
+        :return: If `path` is `None`, then a warning message is returned. If `path` is not `None`, then
         nothing is returned.
         """
-        if copy==None:
+        if path==None:
             return _f('warn', 'no data set')
         else:
-            self.path=copy
+            self.path=path
             self.save=save
-    def r(self, c):
+    def r(self, c: str = None):
         """
         The function calculates the number of unique words and the total number of characters in a given
         string.
@@ -32,7 +32,7 @@ class SP:
         """
         wc, fs = len(set(c.split())), len(c)
         return wc, fs
-    def p(self, n, w, s):
+    def p(self, n: list = None, w: list = None, s: list = None):
         """
         The function `p` plots two bar charts, one for vocabulary size in thousands and another for file
         size in GB, using the given data.
@@ -56,7 +56,7 @@ class SP:
         plt.xticks(rotation=45)
         plt.grid(axis='y', linestyle='--', alpha=0.7)
         plt.tight_layout()
-    def g(self, fp):
+    def g(self, fp: str = None):
         """
         The function checks if a file exists, reads its content, and returns information about the file.
         
@@ -72,7 +72,7 @@ class SP:
                 return [(os.path.basename(fp), wc, fs)]
         else:
             return _f('fatal', f"File '{fp}' not found.")
-    def generate(self, show):
+    def generate(self, show: bool = False):
         """
         The function generates a plot based on data from a file and either saves it or displays it
         depending on the value of the "show" parameter.
@@ -88,7 +88,7 @@ class SP:
         self.p(n, w, s)
         plt.savefig(self.save) if self.save else None
         plt.show() if show else None
-    def destroy(self, confirm=None):
+    def destroy(self, confirm: str = None):
         """
         The `destroy` function deletes a file if the confirmation matches the file name.
         

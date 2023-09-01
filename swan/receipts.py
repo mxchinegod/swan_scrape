@@ -3,7 +3,7 @@ from .fancy_print import _f
 from .utils import check_headers, dateme
 
 class Receipts:
-    def __init__(self, path, data=None, head=None):
+    def __init__(self, path, data=None, head: list = None):
         """
         The function initializes an object with a given path, data, and header, and checks if the data
         and path exist.
@@ -33,7 +33,7 @@ class Receipts:
         :return: a boolean value indicating whether the path specified by `self.path` exists or not.
         """
         return os.path.exists(self.path)
-    def create(self, o=False, ts=True):
+    def create(self, o: bool = False, ts: bool = True):
         """
         The function creates a CSV file with a specified path and writes the header row based on the
         schema, including a timestamp column if specified.
@@ -59,7 +59,7 @@ class Receipts:
             self._schema['header'].append('ts') if ts else None
             io.writerow(self._schema['header']) if self._schema['data'] is not None else None, _f('info', f'[{", ".join(self._schema["header"])}] header used')
         _f('info', f'created {self.path}')
-    def seek(self, line=None, all=False):
+    def seek(self, line: str | int = None, all: bool = False):
         """
         The `seek` function is used to search for specific lines or all lines in a CSV file and return
         the matching lines.
@@ -94,7 +94,7 @@ class Receipts:
                     _r.append(datum)
                 _f('info', f'found {line} in data')
             return _r
-    def write(self, o=False, ts=True, v=False):
+    def write(self, o: bool = False, ts: bool = True, v: bool = False):
         """
         The function writes data to a file in CSV format, including a timestamp if specified, and
         returns a success message or a fatal error message if the file path is not found.
@@ -121,7 +121,7 @@ class Receipts:
                 _f('success', f'{self._schema}' if v else f'{len(self._schema["data"])} written to {self.path}')
         else:
             _f('fatal', 'path not found')
-    def destroy(self, confirm=None):
+    def destroy(self, confirm: str = None):
         """
         The `destroy` function removes a file if the confirmation matches the file name, otherwise it
         displays an error message.

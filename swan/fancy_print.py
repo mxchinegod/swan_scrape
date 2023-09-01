@@ -1,4 +1,4 @@
-def _f(tag, body):
+def _f(tag: str = None, body: any = None):
     """
     The function `_f` takes a tag and a body of text, and prints the tag with an associated emoji and
     color code, followed by the body of text.

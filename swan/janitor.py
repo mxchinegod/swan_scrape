@@ -5,7 +5,7 @@ from .utils import writeme
 import os, re, html
 
 class Janitor:
-    def __init__(self, path=None, o=None):
+    def __init__(self, path: str = None, o: str = None):
         """
         The function initializes an object with a path and an output path, and checks for invalid path
         and missing output path.
@@ -47,7 +47,7 @@ class Janitor:
                     _f('fatal', f'markup encoding - {e} | {_}')
         else:
             return _f('fatal', 'invalid path')
-    def destroy(self, confirm=None):
+    def destroy(self, confirm: str = None):
         """
         The function `destroy` removes a file if the confirmation matches the file name.
         

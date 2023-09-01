@@ -30,7 +30,7 @@ def check_headers(receipts):
     else:
         return True
 
-def dateme(receipt):
+def dateme(receipt: dict = None):
     """
     The `dateme` function adds a timestamp to a receipt dictionary and returns a formatted string with
     the timestamp information.
@@ -44,7 +44,7 @@ def dateme(receipt):
     receipt['ts']=_t
     return _f('info',f'timestamped - {_t}')
 
-def writeme(content, path):
+def writeme(content: str = None, path: str = None):
     """
     The function `writeme` writes the given content to a file specified by the path and returns a
     message indicating that the file has been written.
@@ -60,7 +60,7 @@ def writeme(content, path):
         _.write(content)
     return _f('info',f'written - {path}')
 
-def files(content, url, types):
+def files(content: str = None, url: str = None, types: list = None):
     """
     The function "files" takes in HTML content, a URL, and a list of file types, and returns a list of
     URLs that match the specified file types.
@@ -83,7 +83,7 @@ def files(content, url, types):
             _f('info',f'found - {_u}')
     return _
 
-def dir_size(directory):
+def dir_size(directory: str = None):
     """
     The `dir_size` function calculates the total size of all files in a given directory and its
     subdirectories.
@@ -100,7 +100,7 @@ def dir_size(directory):
             _ += os.path.getsize(filepath)
     return _
     
-def all_dir_size(directories):
+def all_dir_size(directories: list = None):
     """
     The function `all_dir_size` calculates the size of all directories in a given list and returns the
     sizes in gigabytes.
