@@ -14,7 +14,14 @@ superfast web acquisition network - <small>toolkit for 🐍-tier data acquisitio
 
 ## 💻 install
 
-    🚧 coming soon 🚧
+```shell
+python setup.py install
+```
+```shell
+running install
+...
+Finished processing dependencies for swan==0.0.1
+```
 
 ## ⚡️ usage
 
