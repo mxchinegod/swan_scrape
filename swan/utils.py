@@ -157,6 +157,19 @@ def all_dir_size(directories: list = None):
     return sizes
 
 def likethis(_j: dict = object, _s: object = None):
+    """
+    The function `likethis` validates a JSON object `_j` against a JSON schema `_s` and returns `True`
+    if the validation is successful, otherwise it returns a fatal error message.
+    
+    :param _j: The parameter `_j` is a dictionary object that represents the data you want to validate
+    against a schema
+    :type _j: dict
+    :param _s: The parameter `_s` is expected to be an object that represents a JSON schema. It is used
+    to validate the `_j` parameter, which is expected to be a dictionary (JSON object). The function
+    `validate` is called with the `_j` and `_s` parameters to perform the validation
+    :type _s: object
+    :return: either True or an error message if the validation fails.
+    """
     try:
         validate(instance=_j, schema=_s)
     except ve as e:

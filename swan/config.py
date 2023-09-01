@@ -1,5 +1,5 @@
-import os, json
-from swan.utils import _f, readthis, likethis, check, writeme
+import os, json, shutil
+from swan.utils import _f, readthis, likethis, check
 
 class Config:
     def __init__(self, path: str = None):
@@ -36,3 +36,7 @@ class Config:
             f = open(self.p, 'w')
             json.dump(self.c, f)
             return _f('success', f'config saved to - {self.p} {" (overwrite)" if check(self.p) else None}')
+    def unbox(self, o: bool = False):
+        if likethis(self.c, self._schema):
+            _p = f'{self.c["settings"]["data_dir"]}{self.c["settings"]["name"]}'
+            _f('success', f'unboxed! 🦢📦 - {_p} ') if not check(_p) or o else _f('fatal',f'exists - {_p}')
