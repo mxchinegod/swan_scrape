@@ -3,10 +3,10 @@ from .fancy_print import _f
 from .utils import writeme, files
 
 class Copier:
-    def __init__(self, url=None, recurse=False, custom=False):
+    def __init__(self, url: str = None, recurse: bool = False, custom: bool = False) -> None:
         """
         The function initializes an object with optional parameters and checks if a URL is provided.
-        
+    
         :param url: The `url` parameter is used to specify the URL of a webpage that you want to process
         or scrape data from
         :param recurse: The `recurse` parameter is a boolean flag that determines whether the code
@@ -22,8 +22,8 @@ class Copier:
         self.custom = custom
         self.recurse = recurse
         self.url = url
-        return _f('fatal', 'no url passed') if self.url is None else None
-    def check(self, path):
+        return _f('fatal', 'no url passed') if not self.url else None
+    def check(self, path: str = None):
         """
         The function checks if a given path exists.
         
@@ -32,7 +32,7 @@ class Copier:
         :return: a boolean value indicating whether the given path exists or not.
         """
         return os.path.exists(path)
-    def download(self, path=None, sneaky=True, types=None, o=False):
+    def download(self, path: str = None, sneaky: bool = True, types: list = None, o: bool = False):
         """
         The `download` function is used to download files from a given URL, with options for specifying
         the download path, headers, and file types.
@@ -80,7 +80,7 @@ class Copier:
             self._files=_files
             return  _files, _f('success', f'{len(_files)} downloaded')
         return writeme(response.content, path) if safe else _f('fatal',response.status_code), False
-    def destroy(self, confirm=None):
+    def destroy(self, confirm: bool = None):
         """
         The `destroy` function deletes files or directories based on a confirmation and a specified
         path.
