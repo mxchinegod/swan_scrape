@@ -247,6 +247,10 @@ server: example
 example.unbox(True)
 example.unbox()
 ```
+```shell
+🌊 SUCCESS: unboxed! 🦢📦 - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/example 
+☠️ FATAL: exists - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/example
+```
 
 </details>
 
