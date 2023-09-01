@@ -2,7 +2,7 @@
     "role": "server",
     "settings": {
         "name": "test",
-        "proj_dir": "/Users/dylan/VSCode/Research/swan_scrape.git/",
+        "proj_dir": "/Users/dylanmoore/VSCode/Research/swan_scrape.git/",
         "jobs": [
             {
                 "url": "",

@@ -1,8 +1,8 @@
 import os, json, shutil
-from swan.utils import _f, readthis, likethis, check
+from .utils import _f, readthis, likethis, check
 
 class Config:
-    def __init__(self, path: str = None):
+    def __init__(self, config: str | dict = None):
         self._schema = {
             "type": "object"
             , "properties": {
@@ -22,7 +22,11 @@ class Config:
                 }
             }
         }
-        self.p = path if path else _f('fatal', 'path not set')
+        if type(config)==dict:
+            _ = self.create(config)
+            self.p = os.path.join(_,'config.json')
+        else:
+            self.p = config if config else _f('fatal', 'path not set')
         _f('warn', f'config not found - {self.p}') if not check(self.p) else None
     def use(self):
         _c = readthis(self.p)
@@ -35,16 +39,16 @@ class Config:
         if likethis(self.c, self._schema):
             f = open(self.p, 'w')
             json.dump(self.c, f)
-            return _f('success', f'config saved to - {self.p} {" (overwrite)" if check(self.p) else None}')
+            return _f('success', f'config saved to - {self.p}{" (overwrite)" if check(self.p) else None}')
     def unbox(self, o: bool = False):
         if likethis(self.c, self._schema):
             _p = os.path.join(self.c["settings"]["proj_dir"],self.c["settings"]["name"])
             if o and check(_p):
                 shutil.rmtree(_p)
-                os.mkdir(_p)
+                os.makedirs(_p)
                 shutil.copy(self.p, _p)
             elif not check(_p):
-                os.mkdir(_p)
+                os.makedirs(_p)
                 shutil.copy(self.p, _p)
             else:
                 return _f('fatal',f'exists - {_p}')
@@ -55,10 +59,11 @@ class Config:
             if check(_p):
                 return _f('fatal',f'exists - {_p}')
             else:
-                os.mkdir(_p)
+                os.makedirs(_p)
                 f = open(os.path.join(_p, 'config.json'), 'w')
                 json.dump(config, f)
-            return _f('success', f'unboxed! 🦢📦 using - {_p} ')
+            _f('success', f'unboxed! 🦢📦 using - {_p} ')
+            return _p
         else:
             return _f('fatal', 'your config schema does not match the requirements')
     def destroy(self, confirm: str = None):
