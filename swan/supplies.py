@@ -1,9 +1,8 @@
 import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup as bs
-from .fancy_print import _f
 import docx, PyPDF2, re, html
 from io import BytesIO
-from swan.utils import writeme
+from .utils import _f
 
 class Broom:
     def __init__(self, copy: str = None):

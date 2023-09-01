@@ -1,4 +1,4 @@
-from .fancy_print import _f
+from .utils import _f
 
 class Fax:
     def __init__(self, data=None):

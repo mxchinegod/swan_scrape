@@ -1,8 +1,7 @@
 import chardet
-from .fancy_print import _f
-from .supplies import Broom, Custom
-from .utils import writeme
-import os, re, html
+from .supplies import Broom
+from .utils import writeme, _f
+import os
 
 class Janitor:
     def __init__(self, path: str = None, o: str = None):

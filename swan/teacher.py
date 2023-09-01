@@ -1,6 +1,6 @@
 import os
 import matplotlib.pyplot as plt
-from swan.fancy_print import _f
+from .utils import _f
 
 class SP:
     def __init__(self, path: str = None, save: str = None):

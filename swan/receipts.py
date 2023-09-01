@@ -1,6 +1,5 @@
 import os, csv
-from .fancy_print import _f
-from .utils import check_headers, dateme
+from .utils import check_headers, dateme, _f
 
 class Receipts:
     def __init__(self, path, data=None, head: list = None):

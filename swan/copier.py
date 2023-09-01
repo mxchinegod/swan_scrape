@@ -1,6 +1,5 @@
 import os, requests
-from .fancy_print import _f
-from .utils import writeme, files
+from .utils import writeme, files, _f
 
 class Copier:
     def __init__(self, url: str = None, recurse: bool = False, custom: bool = False) -> None:
