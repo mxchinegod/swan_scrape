@@ -253,10 +253,12 @@ server: example
 ```python
 example.unbox(True)
 example.unbox()
+example.destroy()
 ```
 ```shell
 🌊 SUCCESS: unboxed! 🦢📦 - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/example 
 ☠️ FATAL: exists - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/example
+🚨 WARN: example destroyed
 ```
 
 </details>
