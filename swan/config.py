@@ -111,7 +111,7 @@ class Config:
             if not check(self.p):
                 return _f('fatal', f'invalid path - {self.p}')
             if confirm==self.c["settings"]["name"]:
-                shutil.rmtree(self.p.replace('config.json','')), _f('warn', f'{confirm} destroyed')
+                shutil.rmtree(os.path.join(self.c["settings"]["proj_dir"],self.c["settings"]["name"])), _f('warn', f'{confirm} destroyed')
             else:
                 _f('fatal','you did not confirm - `Config.destroy(confirm="your_config_name")`')
         
