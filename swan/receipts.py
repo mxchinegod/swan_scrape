@@ -25,7 +25,7 @@ class Receipts:
             "data": data
             , "header": head
         }
-        return _f('fatal', 'data not found') if data==None else _f('warn', 'path not found') if not check(self.path) else None
+        return _f('fatal', 'data not found') if data==None else _f('warn', 'receipts first create') if not check(self.path) else _f('warn', 'receipts found')
     def create(self, o: bool = False, ts: bool = True):
         """
         The function creates a CSV file with a specified path and writes the header row based on the

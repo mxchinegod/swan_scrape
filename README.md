@@ -304,6 +304,7 @@ direct_load.destroy('fin-swan')
 from swan.copier import Copier
 from swan.receipts import Receipts
 from swan.config import Config
+from swan.janitor import Janitor
 import os
 
 fin_conf = {
@@ -337,6 +338,8 @@ for job in c['settings']['jobs']:
 receipts = Receipts(path=p+'/fed.csv', data=data)
 receipts.create(True)
 receipts.write(False)
+worker = Janitor(p+'/fed.txt', o=p+'/fed_processed.txt')
+worker.process()
 ```
 ```shell
 🌊 SUCCESS: unboxed! 🦢📦 using - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/fin-swan 
