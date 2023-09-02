@@ -17,7 +17,7 @@ class Config:
             _ = self._create(config)
             self.p = os.path.join(_,'config.json')
         else:
-            self.p = config if config else _f('fatal', 'path not set')
+            self.p = os.path.abspath(config) if config else _f('fatal', 'path not set')
         _f('warn', f'config not found - {self.p}') if not check(self.p) else None
     def use(self):
         """
