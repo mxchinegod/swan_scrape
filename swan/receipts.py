@@ -54,7 +54,7 @@ class Receipts:
                     _f('fatal','no data passed to receipts')
                 self.headers.append('ts')
                 io.writerow(self.headers) if data is not None else _f('info', f'[{", ".join(self.headers)}] header used')
-        _f('info', f'created {proj_path}')
+        _f('info', f'created {os.path.join(proj_path, "receipts.csv")}')
     def seek(self, line: str | int = None, all: bool = False):
         """
         The `seek` function is used to search for specific lines or all lines in a CSV file and return
