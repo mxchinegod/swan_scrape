@@ -21,7 +21,7 @@ class Config:
         proj_path = os.path.join(self.conf['settings']['proj_dir'],self.conf['settings']['name'],'config.json')
         f = open(proj_path, 'w')
         json.dump(self.conf, f)
-        return _f('info', f'config saved to - {"/".join(proj_path.split("/")[:-1])} {" (overwrite)" if check(proj_path) else None}')
+        return _f('info', f'config saved to - {"/".join(proj_path.split("/")[:-1])}')
     def unbox(self, o: bool = False):
         proj_path = os.path.join(self.conf["settings"]["proj_dir"],self.conf["settings"]["name"])
         if o and check(proj_path):
@@ -64,7 +64,7 @@ class Config:
         """
         if not check(self.p):
             return _f('fatal', f'invalid path - {self.p}')
-        if confirm==self.conf["settings"]["name"]:
+        if confirm==self.c["settings"]["name"]:
             shutil.rmtree(self.p.replace('config.json','')), _f('warn', f'{confirm} destroyed')
         else:
             _f('fatal','you did not confirm - `Config.destroy(confirm="your_config_name")`')
