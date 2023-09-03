@@ -25,6 +25,42 @@ Finished processing dependencies for swan==0.0.1
 
 ## ⚡️ usage
 
+### new
+
+```python
+from swan import swan
+auto = swan.Swan('./config.json')
+run = auto.go()
+```
+```shell
+🌊 SUCCESS: config set from - ./config.json
+ℹ️ INFO: config saved to - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/example  (overwrite)
+🌊 SUCCESS: unboxed! 🦢📦 - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/example 
+☕️ WAIT: swanning with "example"
+ℹ️ INFO: Copier initialized
+ℹ️ INFO: Receipts initialized
+ℹ️ INFO: Janitor initialized
+ℹ️ INFO: written - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/example/fomchistorical2017.htm
+☕️ WAIT: setting header with `.keys()`
+🌊 SUCCESS: headers detected as ['file', 'path'] from `.keys()`
+ℹ️ INFO: created /Users/dylanmoore/VSCode/LLM/swan_scrape.git/example
+ℹ️ INFO: timestamped - 2023-09-03 15:19:38.882560
+🌊 SUCCESS: 1 written to /Users/dylanmoore/VSCode/LLM/swan_scrape.git/example/receipts.csv
+ℹ️ INFO: written - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/example/fomchistorical2017_cleaned.txt
+🌊 SUCCESS: 🦢 done
+```
+
+```python
+print(run)
+auto.destroy('example')
+```
+```shell
+{'config': <swan.config.Config object at 0x10703fb90>, 'copier': <swan.copier.Copier object at 0x1048e1310>, 'receipts': <swan.receipts.Receipts object at 0x10702ff90>, 'janitor': <swan.janitor.Janitor object at 0x10702f3d0>, 'data': [{'file': 'https://www.federalreserve.gov/monetarypolicy/fomchistorical2017.htm', 'path': '/Users/dylanmoore/VSCode/LLM/swan_scrape.git/example/fomchistorical2017.htm', 'ts': datetime.datetime(2023, 9, 3, 15, 19, 38, 882560)}], 'status': 'complete'}
+🚨 WARN: example destroyed
+```
+
+### old (many of these will be broken while being retrofitted)
+
 <details>
 <summary>single file & receipt creation, then deletion</summary>
 <br>
