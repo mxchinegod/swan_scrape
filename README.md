@@ -239,7 +239,7 @@ p.destroy(confirm=p.save.split('/')[-1])
 
 </details>
 
-## 🤓 advanced configuration & job planning
+## 🤓 advanced configuration & job planning (many of these will be broken while being retrofitted)
 
 <details><summary>declare existing config from file</summary>
 
