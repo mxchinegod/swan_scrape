@@ -2,7 +2,7 @@ import os, requests
 from .utils import writeme, files, _f
 
 class Copier:
-    def __init__(self, url: str = None, recurse: bool = False, custom: bool = False) -> None:
+    def __init__(self, conf: dict = None):
         """
         The function initializes an object with optional parameters and checks if a URL is provided.
     
@@ -18,20 +18,10 @@ class Copier:
         :return: If the `url` parameter is `None`, the function will return a call to `_f('fatal', 'no
         url passed')`. Otherwise, it will return `None`.
         """
-        self.custom = custom
-        self.recurse = recurse
-        self.url = url
-        return _f('fatal', 'no url passed') if not self.url else None
-    def check(self, path: str = None):
-        """
-        The function checks if a given path exists.
-        
-        :param path: The path parameter is a string that represents the file or directory path that you
-        want to check for existence
-        :return: a boolean value indicating whether the given path exists or not.
-        """
-        return os.path.exists(path)
-    def download(self, path: str = None, sneaky: bool = True, types: list = None, o: bool = False):
+        self.data = []
+        self.conf = conf.conf
+        _f('info', 'Copier initialized') if conf else _f('warn', f'no configuration loaded')
+    def download(self, o: bool=False, f: str=None):
         """
         The `download` function is used to download files from a given URL, with options for specifying
         the download path, headers, and file types.
@@ -52,33 +42,36 @@ class Copier:
         :return: either a tuple containing the downloaded files and a success message, or it returns an
         error message and False.
         """
-        _f('warn','no download path set') if path==None else None
-        if sneaky:
-            headers = {
-                "User-Agent": "PostmanRuntime/7.23.3",
-                "Accept": "*/*",
-                "Accept-Encoding": "gzip, deflate, br",
-                "Connection": "keep-alive"
-            }
-        else:
-            headers={}
-        response = requests.get(self.url, headers=headers)
-        safe = response.status_code==200
-        self.path=path if safe else None
-        if self.recurse and types and safe:
-            _files = files(response.content, self.url, types)
-            for _file in _files:
-                _p = Copier(url=_file)
-                if o and self.check(f'{self.path}/{_file.split("/")[-1]}'):
-                    _p.download(f'{self.path}/{_file.split("/")[-1]}')
-                elif not self.check(f'{self.path}/{_file.split("/")[-1]}'):
-                    _p.download(f'{self.path}/{_file.split("/")[-1]}')
-                else:
-                    _f('warn',f'{_file.split("/")[-1]} already exists - set `o=True` to overwrite when downloading')
-                    _files.remove(_file)
-            self._files=_files
-            return  _files, _f('success', f'{len(_files)} downloaded')
-        return writeme(response.content, path) if safe else _f('fatal',response.status_code), False
+        headers = {
+            "User-Agent": "PostmanRuntime/7.23.3",
+            "Accept": "*/*",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Connection": "keep-alive"
+        }
+        proj_path = os.path.join(self.conf["settings"]["proj_dir"],self.conf["settings"]["name"])
+        for job in self.conf['settings']['jobs']:
+            f = f'{proj_path}/{job["url"].split("/")[-1]}'
+            response = requests.get(job['url'], headers=headers)
+            safe = response.status_code==200
+            self.data.append({"file":job["url"], "path":f'{os.path.join(proj_path,job["url"].split("/")[-1])}'})
+            if job['recurse'] and job['types'] and safe:
+                _files = files(response.content, job['url'], job['types'])
+                for _file in _files:
+                    f = f'{proj_path}/{_file.split("/")[-1]}'
+                    if o and self.check(f):
+                        return writeme(response.content, f) if safe else _f('fatal',response.status_code), False
+                    elif not self.check(f):
+                        return writeme(response.content, f) if safe else _f('fatal',response.status_code), False
+                    else:
+                        _f('warn',f'{_file.split("/")[-1]} already exists - set `o=True` to overwrite when downloading')
+                        _files.remove(_file)
+                self._files=_files
+                _f('success', f'{len(_files)} downloaded')
+                return self.data
+            else:
+                if safe:
+                    writeme(response.content, f) if safe else _f('fatal',response.status_code)
+                    return self.data
     def destroy(self, confirm: bool = None):
         """
         The `destroy` function deletes files or directories based on a confirmation and a specified

@@ -2,7 +2,7 @@ import os, csv
 from .utils import check_headers, dateme, _f, check
 
 class Receipts:
-    def __init__(self, path, data=None, head: list = None):
+    def __init__(self, conf: dict = None):
         """
         The function initializes an object with a given path, data, and header, and checks if the data
         and path exist.
@@ -20,13 +20,11 @@ class Receipts:
         it returns a warning message saying "path not found". If both conditions are met, it returns
         `None`.
         """
-        self.path = path
-        self._schema = {
-            "data": data
-            , "header": head
-        }
-        return _f('fatal', 'data not found') if data==None else _f('warn', 'receipts first create') if not check(self.path) else _f('warn', 'receipts found')
-    def create(self, o: bool = False, ts: bool = True):
+        self.headers = []
+        self.conf = conf.conf
+        _f('info', 'Receipts initialized') if conf else _f('warn', f'no configuration loaded')
+
+    def create(self, data: dict=None, o: bool = False):
         """
         The function creates a CSV file with a specified path and writes the header row based on the
         schema, including a timestamp column if specified.
@@ -43,15 +41,20 @@ class Receipts:
         the code creates a new file and writes the header row to it. Finally, an info message is printed
         indicating that the file has been created.
         """
-        _e = check(self.path)
-        if _e and not o:
-            return _f('warn', f'{self.path} exists')
-        with open(self.path, 'w') as _:
-            io = csv.writer(_)
-            check_headers(self) if self._schema['data'] is not None else None
-            self._schema['header'].append('ts') if ts else None
-            io.writerow(self._schema['header']) if self._schema['data'] is not None else None, _f('info', f'[{", ".join(self._schema["header"])}] header used')
-        _f('info', f'created {self.path}')
+        proj_path = os.path.join(self.conf["settings"]["proj_dir"],self.conf["settings"]["name"])
+        if check(os.path.join(proj_path,'receipts.csv')) and not o:
+            return _f('warn', f'{proj_path} exists')
+        else:
+            with open(os.path.join(proj_path,'receipts.csv'), 'w') as _:
+                io = csv.writer(_)
+                if data is not None:
+                    self.headers = check_headers(data[0])
+                    self.data = data
+                else:
+                    _f('fatal','no data passed to receipts')
+                self.headers.append('ts')
+                io.writerow(self.headers) if data is not None else _f('info', f'[{", ".join(self.headers)}] header used')
+        _f('info', f'created {proj_path}')
     def seek(self, line: str | int = None, all: bool = False):
         """
         The `seek` function is used to search for specific lines or all lines in a CSV file and return
@@ -68,12 +71,12 @@ class Receipts:
         if all:
             if line is not None:
                 return _f('fatal','you have `line` and `all` set')
-            with open(self.path, 'r') as _:
+            with open(self.proj_path, 'r') as _:
                 o = [x for x in csv.DictReader(_)]
                 return o
         check_headers(self)
-        _ = [x for x in csv.DictReader(open(self.path, 'r'))]
-        if self._schema['data'] is None:
+        _ = [x for x in csv.DictReader(open(self.proj_path, 'r'))]
+        if self.data is None:
             return _f('fatal', 'no data passed')
         if isinstance(line, int):
             try:
@@ -99,19 +102,18 @@ class Receipts:
         present in the header, it will be appended to the header, defaults to True (optional)
         :param v: The parameter `v` is a boolean flag that determines whether to include additional
         information in the success message. If `v` is `True`, the success message will include the
-        entire `self._schema` object. If `v` is `False`, the success message will include the number of
+        entire `list(self.data.keys())` object. If `v` is `False`, the success message will include the number of
         items, defaults to False (optional)
         """
-        _e = check(self.path)
-        _h = check_headers(self)
-        self._schema['header'].append('ts') if ts and 'ts' not in self._schema['header'] else None
-        if _e:
-            with open(self.path, 'w+' if o else 'a') as _:
-                io = csv.DictWriter(_) if isinstance(self._schema['data'], dict) else csv.writer(_)
-                io.writerow(self._schema['header']) if _h and o else None
-                [dateme(x) for x in self._schema['data']]
-                [io.writerow(x.values()) for x in self._schema['data']]
-                _f('success', f'{self._schema}' if v else f'{len(self._schema["data"])} written to {self.path}')
+        proj_path = os.path.join(self.conf["settings"]["proj_dir"],self.conf["settings"]["name"])
+        self.headers.append('ts') if ts and 'ts' not in self.headers else None
+        if check(proj_path):
+            with open(os.path.join(proj_path,'receipts.csv'), 'w+' if o else 'a') as _:
+                io = csv.DictWriter(_) if isinstance(self.data, dict) else csv.writer(_)
+                io.writerow(self.headers) if self.headers and o else None
+                [dateme(x) for x in self.data]
+                [io.writerow(x.values()) for x in self.data]
+                _f('success', f'{list(self.data[0].keys())}' if v else f'{len(self.data)} written to {os.path.join(proj_path, "receipts.csv")}')
         else:
             _f('fatal', 'path not found')
     def destroy(self, confirm: str = None):
@@ -122,8 +124,8 @@ class Receipts:
         :param confirm: The `confirm` parameter is used to confirm the destruction of a file. It should
         be set to the name of the file that you want to destroy
         """
-        if confirm==self.path.split('/')[-1]:
-            os.remove(self.path), _f('warn', f'{confirm} destroyed from {self.path}') 
+        if confirm==self.proj_path.split('/')[-1]:
+            os.remove(self.proj_path), _f('warn', f'{confirm} destroyed from {self.proj_path}') 
         else:
             _f('fatal','you did not confirm - `Receipts.destroy(confirm="file_name")`')
         

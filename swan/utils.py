@@ -39,7 +39,7 @@ def check(path):
     """
     return os.path.exists(path)
 
-def check_headers(receipts):
+def check_headers(data):
     """
     The function `check_headers` checks if the `receipts` object has a header set and returns it if it
     exists, otherwise it attempts to set the header using the keys of the first data item and returns
@@ -52,17 +52,14 @@ def check_headers(receipts):
     set, or it returns `True` if the headers are not set and it successfully detects the headers using
     `.keys()`. If there is an exception during the process, it returns `False`.
     """
-    if receipts._schema['header'] is None:
-        _f('wait','no header set - attempting `.keys()`')
-        try:
-            receipts._schema['header'] = list(receipts._schema['data'][0].keys())
-            _f('success', f'headers detected as {receipts._schema["header"]} from `.keys()`')
-            return receipts._schema['header']
-        except Exception as e:
-            _f('fatal', f'{e}')
-            return False
-    else:
-        return True
+    _f('wait','setting header with `.keys()`')
+    try:
+        h = list(data.keys())
+        _f('success', f'headers detected as {h} from `.keys()`')
+        return h
+    except Exception as e:
+        _f('fatal', f'{e}')
+        return False
 
 def dateme(receipt: dict = None):
     """
@@ -170,27 +167,29 @@ def likethis(_j: dict = object):
     :type _s: object
     :return: either True or an error message if the validation fails.
     """
-    schema = {
-        "type": "object"
-        , "properties": {
-            "role": { "type": "string" }
-            , "settings": {
-                "name": { "type": "string" }
-                , "proj_dir": { "type": "string" }
-                , "jobs": {
-                    "type": "object"
-                    , "properties": {
-                        "url": { "type": "string" }
-                        , "files": { "type": "array" }
-                        , "janitor": { "type": "boolean" }
-                        , "custom": { "type": "array" }
+    _schema = {
+            "type": "object"
+            , "properties": {
+                "role": { "type": "string" }
+                , "settings": {
+                    "name": { "type": "string" }
+                    , "proj_dir": { "type": "string" }
+                    , "jobs": {
+                        "type": "object"
+                        , "properties": {
+                            "url": { "type": "string" }
+                            , "files": { "type": "array" }
+                            , "recurse": { "type": "boolean" }
+                            , "receipts": { "type": "string" }
+                            , "janitor": { "type": "boolean" }
+                            , "custom": { "type": "array" }
+                        }
                     }
                 }
             }
         }
-    }
     try:
-        validate(_j, schema)
+        validate(_j, _schema)
     except ve as e:
         return _f('fatal',f'{e}')
     return True
