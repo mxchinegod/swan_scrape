@@ -25,8 +25,6 @@ Finished processing dependencies for swan==0.0.1
 
 ## ⚡️ usage
 
-### new
-
 ```python
 from swan import swan
 auto = swan.Swan('./config.json')
@@ -59,7 +57,7 @@ auto.destroy('example')
 🚨 WARN: example destroyed
 ```
 
-### old (many of these will be broken while being retrofitted)
+## old (many of these will be broken while being retrofitted)
 
 <details>
 <summary>single file & receipt creation, then deletion</summary>
@@ -239,7 +237,7 @@ p.destroy(confirm=p.save.split('/')[-1])
 
 </details>
 
-## 🤓 advanced configuration & job planning (many of these will be broken while being retrofitted)
+### 🤓 advanced configuration & job planning (many of these will be broken while being retrofitted)
 
 <details><summary>declare existing config from file</summary>
 
