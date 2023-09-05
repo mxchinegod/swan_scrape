@@ -1,5 +1,5 @@
 import os, requests
-from .utils import writeme, files, _f
+from .utils import writeme, files, _f, check
 
 class Copier:
     def __init__(self, conf: dict = None):
@@ -53,15 +53,16 @@ class Copier:
             f = f'{proj_path}/{job["url"].split("/")[-1]}'
             response = requests.get(job['url'], headers=headers)
             safe = response.status_code==200
-            self.data.append({"file":job["url"], "path":f'{os.path.join(proj_path,job["url"].split("/")[-1])}'})
             if job['recurse'] and job['types'] and safe:
                 _files = files(response.content, job['url'], job['types'])
                 for _file in _files:
                     f = f'{proj_path}/{_file.split("/")[-1]}'
-                    if o and self.check(f):
-                        return writeme(response.content, f) if safe else _f('fatal',response.status_code), False
-                    elif not self.check(f):
-                        return writeme(response.content, f) if safe else _f('fatal',response.status_code), False
+                    if o and check(f):
+                        self.data.append({"file":_file, "path":f'{os.path.join(proj_path,_file.split("/")[-1])}'})
+                        writeme(response.content, f) if safe else _f('fatal',response.status_code), False
+                    elif not check(f):
+                        self.data.append({"file":_file, "path":f'{os.path.join(proj_path,_file.split("/")[-1])}'})
+                        writeme(response.content, f) if safe else _f('fatal',response.status_code), False
                     else:
                         _f('warn',f'{_file.split("/")[-1]} already exists - set `o=True` to overwrite when downloading')
                         _files.remove(_file)
@@ -70,6 +71,7 @@ class Copier:
                 return self.data
             else:
                 if safe:
+                    self.data.append({"file":job["url"], "path":f'{os.path.join(proj_path,job["url"].split("/")[-1])}'})
                     writeme(response.content, f) if safe else _f('fatal',response.status_code)
                     return self.data
     def destroy(self, confirm: bool = None):

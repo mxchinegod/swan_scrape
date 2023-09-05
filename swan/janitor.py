@@ -24,7 +24,6 @@ class Janitor:
         """
         proj_path = os.path.join(self.conf["settings"]["proj_dir"],self.conf["settings"]["name"])
         if data and check(proj_path):
-            self.data = data
             for d in data:
                 with open(d['path'], 'rb') as f:
                     _ = f.read()
@@ -36,7 +35,7 @@ class Janitor:
                             _t = Broom(copy=_.decode(enc)).sweep(xml=True)
                         else:
                             _t = Broom(copy=_.decode(enc)).sweep()
-                        return writeme(_t.encode(), os.path.join('/'.join(d['path'].split('/')[:-1]), d['path'].split('/')[-1].split('.')[0]+'_cleaned.txt'))
+                        writeme(_t.encode(), os.path.join('/'.join(d['path'].split('/')[:-1]), d['path'].split('/')[-1].split('.')[0]+'_cleaned.txt'))
                     except Exception as e:
                         _f('fatal', f'markup encoding - {e} | {_}')
         else:

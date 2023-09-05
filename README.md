@@ -25,39 +25,105 @@ Finished processing dependencies for swan==0.0.1
 
 ## ⚡️ usage
 
+<small>🦢 check .json configs!</small>
+
+<details><summary>Single File</summary>
+
 ```python
 from swan import swan
 auto = swan.Swan('./config.json')
 run = auto.go()
+print(run)
+auto.destroy('example')
 ```
 ```shell
-🌊 SUCCESS: config set from - ./config.json
-ℹ️ INFO: config saved to - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/example  (overwrite)
+🌊 SUCCESS: config set from - ./example.json
+ℹ️ INFO: config saved to - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/example
 🌊 SUCCESS: unboxed! 🦢📦 - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/example 
 ☕️ WAIT: swanning with "example"
 ℹ️ INFO: Copier initialized
 ℹ️ INFO: Receipts initialized
 ℹ️ INFO: Janitor initialized
 ℹ️ INFO: written - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/example/fomchistorical2017.htm
+[{'file': 'https://www.federalreserve.gov/monetarypolicy/fomchistorical2017.htm', 'path': '/Users/dylanmoore/VSCode/LLM/swan_scrape.git/example/fomchistorical2017.htm'}]
 ☕️ WAIT: setting header with `.keys()`
 🌊 SUCCESS: headers detected as ['file', 'path'] from `.keys()`
-ℹ️ INFO: created /Users/dylanmoore/VSCode/LLM/swan_scrape.git/example
-ℹ️ INFO: timestamped - 2023-09-03 15:19:38.882560
+ℹ️ INFO: created /Users/dylanmoore/VSCode/LLM/swan_scrape.git/example/receipts.csv
+ℹ️ INFO: timestamped - 2023-09-05 06:36:57.003699
 🌊 SUCCESS: 1 written to /Users/dylanmoore/VSCode/LLM/swan_scrape.git/example/receipts.csv
 ℹ️ INFO: written - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/example/fomchistorical2017_cleaned.txt
 🌊 SUCCESS: 🦢 done
-```
-
-```python
-print(run)
-auto.destroy('example')
-```
-```shell
-{'config': <swan.config.Config object at 0x10703fb90>, 'copier': <swan.copier.Copier object at 0x1048e1310>, 'receipts': <swan.receipts.Receipts object at 0x10702ff90>, 'janitor': <swan.janitor.Janitor object at 0x10702f3d0>, 'data': [{'file': 'https://www.federalreserve.gov/monetarypolicy/fomchistorical2017.htm', 'path': '/Users/dylanmoore/VSCode/LLM/swan_scrape.git/example/fomchistorical2017.htm', 'ts': datetime.datetime(2023, 9, 3, 15, 19, 38, 882560)}], 'status': 'complete'}
+{'config': <swan.config.Config object at 0x10fde00d0>, 'copier': <swan.copier.Copier object at 0x10e588d50>, 'receipts': <swan.receipts.Receipts object at 0x10fddb0d0>, 'janitor': <swan.janitor.Janitor object at 0x106c6af90>, 'data': [{'file': 'https://www.federalreserve.gov/monetarypolicy/fomchistorical2017.htm', 'path': '/Users/dylanmoore/VSCode/LLM/swan_scrape.git/example/fomchistorical2017.htm', 'ts': datetime.datetime(2023, 9, 5, 6, 36, 57, 3699)}], 'status': 'complete'}
 🚨 WARN: example destroyed
 ```
 
-## old (many of these will be broken while being retrofitted)
+</details>
+
+<details>
+<summary>Recursive/Batch Processing</summary>
+
+
+```python
+from swan import swan
+auto = swan.Swan('./recurse.example.json')
+run = auto.go()
+print(run)
+auto.destroy('recurse_example')
+```
+```shell
+🌊 SUCCESS: config set from - ./recurse.example.json
+ℹ️ INFO: config saved to - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/recurse_example
+🌊 SUCCESS: unboxed! 🦢📦 - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/recurse_example 
+☕️ WAIT: swanning with "recurse_example"
+ℹ️ INFO: Copier initialized
+ℹ️ INFO: Receipts initialized
+ℹ️ INFO: Janitor initialized
+☕️ WAIT: processing https://www.federalreserve.gov/monetarypolicy/fomchistorical2017.htm
+100%|██████████| 326/326 [00:00<00:00, 196344.50it/s]
+ℹ️ INFO: found - https://www.federalreserve.gov/monetarypolicy/beigebook/files/Beigebook_20170118.pdf
+ℹ️ INFO: found - https://www.federalreserve.gov/monetarypolicy/files/FOMC20170201tealbooka20170123.pdf
+ℹ️ INFO: found - https://www.federalreserve.gov/monetarypolicy/files/FOMC20170201tealbookb20170126.pdf
+ℹ️ INFO: found - https://www.federalreserve.gov/monetarypolicy/files/FOMC20170201Agenda.pdf
+ℹ️ INFO: found - https://www.federalreserve.gov/monetarypolicy/files/FOMC_LongerRunGoals_201701.pdf
+...
+ℹ️ INFO: found - https://www.federalreserve.gov/monetarypolicy/files/FOMC20170503tealbookb20170427.pdf
+ℹ️ INFO: found - https://www.federalreserve.gov/monetarypolicy/files/FOMC20170503Agenda.pdf
+ℹ️ INFO: found - https://www.federalreserve.gov/monetarypolicy/files/fomcminutes20170503.pdf
+ℹ️ INFO: found - https://www.federalreserve.gov/monetarypolicy/files/FOMC20170503meeting.pdf
+ℹ️ INFO: found - https://www.federalreserve.gov/monetarypolicy/files/FOMC20170503material.pdf
+ℹ️ INFO: found - https://www.federalreserve.gov/monetarypolicy/files/BeigeBook_20170531.pdf
+...
+ℹ️ INFO: timestamped - 2023-09-05 06:41:52.462400
+ℹ️ INFO: timestamped - 2023-09-05 06:41:52.462402
+🌊 SUCCESS: 65 written to /Users/dylanmoore/VSCode/LLM/swan_scrape.git/recurse_example/receipts.csv
+ℹ️ INFO: written - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/recurse_example/Beigebook_20170118_cleaned.txt
+Output is truncated. View as a scrollable element or open in a text editor. Adjust cell output settings...
+
+ℹ️ INFO: written - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/recurse_example/FOMC20170201tealbooka20170123_cleaned.txt
+ℹ️ INFO: written - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/recurse_example/FOMC20170201tealbookb20170126_cleaned.txt
+ℹ️ INFO: written - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/recurse_example/FOMC20170201Agenda_cleaned.txt
+ℹ️ INFO: written - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/recurse_example/FOMC_LongerRunGoals_201701_cleaned.txt
+ℹ️ INFO: written - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/recurse_example/fomcminutes20170201_cleaned.txt
+ℹ️ INFO: written - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/recurse_example/FOMC20170201meeting_cleaned.txt
+...
+ℹ️ INFO: written - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/recurse_example/FOMC20170503tealbooka20170421_cleaned.txt
+ℹ️ INFO: written - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/recurse_example/FOMC20170503tealbookb20170427_cleaned.txt
+ℹ️ INFO: written - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/recurse_example/FOMC20170503Agenda_cleaned.txt
+ℹ️ INFO: written - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/recurse_example/fomcminutes20170503_cleaned.txt
+ℹ️ INFO: written - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/recurse_example/FOMC20170503meeting_cleaned.txt
+ℹ️ INFO: written - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/recurse_example/FOMC20170503material_cleaned.txt
+ℹ️ INFO: written - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/recurse_example/BeigeBook_20170531_cleaned.txt
+ℹ️ INFO: written - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/recurse_example/FOMC20170614tealbooka20170605_cleaned.txt
+...
+ℹ️ INFO: written - /Users/dylanmoore/VSCode/LLM/swan_scrape.git/recurse_example/FOMC20171213material_cleaned.txt
+🌊 SUCCESS: 🦢 done
+{'config': <swan.config.Config object at 0x105301a10>, 'copier': <swan.copier.Copier object at 0x1041c3390>, 'receipts': <swan.receipts.Receipts object at 0x106792690>, 'janitor': <swan.janitor.Janitor object at 0x106792c90>, 'data': [{'file': 'https://www.federalreserve.gov/monetarypolicy/beigebook/files/Beigebook_20170118.pdf'...
+🚨 WARN: recurse_example destroyed
+```
+
+</details>
+
+#### old (many of these will be broken while being retrofitted)
 
 <details>
 <summary>single file & receipt creation, then deletion</summary>
@@ -237,7 +303,7 @@ p.destroy(confirm=p.save.split('/')[-1])
 
 </details>
 
-### 🤓 advanced configuration & job planning (many of these will be broken while being retrofitted)
+#### 🤓 advanced configuration & job planning (many of these will be broken while being retrofitted)
 
 <details><summary>declare existing config from file</summary>
 

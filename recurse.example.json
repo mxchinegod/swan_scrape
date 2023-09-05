@@ -1,13 +1,13 @@
 {
     "role": "server",
     "settings": {
-        "name": "example",
+        "name": "recurse_example",
         "proj_dir": "/Users/dylanmoore/VSCode/LLM/swan_scrape.git/",
         "jobs": [
             {
                 "url": "https://www.federalreserve.gov/monetarypolicy/fomchistorical2017.htm",
-                "types": [],
-                "recurse": false,
+                "types": ["pdf"],
+                "recurse": true,
                 "janitor": false,
                 "custom": [
                     {

@@ -17,6 +17,7 @@ class Swan:
         r = Receipts(self.config)
         j = Janitor(self.config)
         data = copy.download()
+        print(data)
         r.create(data)
         r.write()
         j.process(data)
