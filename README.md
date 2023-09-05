@@ -124,7 +124,7 @@ Output is truncated. View as a scrollable element or open in a text editor. Adju
 </details>
 
 
-<small>🚧 more soon!📝</small>
+<small>🚧 more soon!</small>
 
 -----
 
